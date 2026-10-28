@@ -23,18 +23,22 @@ int*  merge(int* arrOne, int* arrTwo, int sizeOne, int sizeTwo) {
 int* mergeSort(int* arr, int size) {
     if (size > 1) {
         int midPoint = size / 2;
-
         int* arrOne = malloc(midPoint * sizeof(int));
         int* arrTwo = malloc((size - midPoint) * sizeof(int));
-
         memcpy(arrOne, arr, (midPoint) * sizeof(int)); 
         memcpy(arrTwo, arr + midPoint, (size - midPoint) * sizeof(int));
-        arrOne = mergeSort(arrOne, midPoint);
-        arrTwo = mergeSort(arrTwo, size - midPoint); 
-        int* mergedArr = merge(arrOne, arrTwo, midPoint, size - midPoint);
 
-        free(arrOne);
-        free(arrTwo);
+        int* sortedOne = mergeSort(arrOne, midPoint);
+        int* sortedTwo = mergeSort(arrTwo, size - midPoint); 
+        int* mergedArr = merge(sortedOne, sortedTwo, midPoint, size - midPoint);
+
+        if (arrOne != sortedOne)
+            free(arrOne);
+        if (arrTwo != sortedTwo)
+            free(arrTwo);
+        free(sortedOne);
+        free(sortedTwo);
+
         return mergedArr;
     }
     return arr;
